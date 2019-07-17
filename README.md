@@ -1,7 +1,7 @@
 # PlasmidomeIBM
 Individual-based model simulating the inter- and intracellular interaction of diverse plasmids in a clonal bacterial population.
 
-The model is implemented in the multi-agent programmable modeling environment NetLogo, which is freely available from https://ccl.northwestern.edu/netlogo/
+The model is implemented in the multi-agent programmable modeling environment NetLogo, which is freely available from https://ccl.northwestern.edu/netlogo/. It was created under NetLogo Version 6.0.4.
 
 Downloading and running the model file with NetLogo allows you to reproduce some predefinded simulation experiments, stored as setups in the 'BehaviorSpace' as well as to run simulations with self-defined parameters.
 
