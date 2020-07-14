@@ -1,12 +1,18 @@
 ;************************************************************************
 ;
-; PlasmidomeIBM - Individual-based model simulating the inter-
-;                 and intracellular interaction of diverse
-;                 plasmids in a clonal bacterial population
+; PlasmidomeIBM - Simulates a diverse plasmid community
+;                 in structured and mixed environments;
+;                 considering the modular basis of plasmid
+;                 costs and transfer probabilities in relation
+;                 to costs associated with the conjugation module
 ;
-; © Martin Zwanzig 2019
+; © Martin Zwanzig 2020
 ;
-; Created under NetLogo Version 6.0.4
+;   M Zwanzig, U Berger (2020): Modelling the impact of plasmid
+;   interactions on coexistence and antibiotic resistance in evolving
+;   plasmid communities. eLife (under review; 14.07.2020)
+;
+; Created under NetLogo Version 6.1.1
 ;
 ;************************************************************************
 
@@ -54,7 +60,6 @@ globals [
   I3            ;number of plasmids belonging to incompatibility group 3
   I4            ;number of plasmids belonging to incompatibility group 4
   I5            ;number of plasmids belonging to incompatibility group 5
-  ; .... this could be extended to more than 5 groups, but it is probably easier to go for such an in-depth analysis using another software, e.g. R
   can-pb.       ;plasmid-burden of the candidate plasmid if only single plasmid dynamics is considered
   can-tp.       ;transfer probability of the candidate plasmid if only single plasmid dynamics is considered
   reproduction  ;number of reproduction events per tick
@@ -87,9 +92,9 @@ turtles-own [
   res.     ;defines if antibiotic resistance genes are present (only for plasmids with am. costs > 0.05)
 ]
 
-;************************PARAMETERIZATION********************************
-
-to reset-default-settings
+;*****************************RESET**************************************
+to reset ; Resets the model parameters to a default setting
+  set record-video? false
   set world-dim 250
   set initial-plasmid-density 0.8
   set rm-mean 0.03
@@ -100,12 +105,13 @@ to reset-default-settings
   set ec-mean 2
   set dev-strength 0.5
   set inc-numbers 3
-  set seg-prob 0.001
-  set immigration 0
   set mortality 0.2
+  set immigration 0
+  set seg-prob 0.001
   set mixed-environment? false
-  set inc-seg-mechanism "random-daughter-load"
   set consider-single-plasmid-dynamics? false
+  set surface-exclusion? true
+  set inc-seg-mechanism "random-daughter-load"
   set baa 0
   set initial-ARP? "none"
   set conjugative-ARP? false
@@ -113,7 +119,6 @@ to reset-default-settings
   set generations_of_antibiotic_presence 0
   set simulation-time 10000
   set stop-when-resistance-is-lost? false
-  set record-video? false
   set evaluate-tp-pb-relations? true
 end
 
@@ -704,9 +709,9 @@ generations
 30.0
 
 BUTTON
-163
+13
 10
-228
+68
 43
 NIL
 setup
@@ -721,9 +726,9 @@ NIL
 1
 
 BUTTON
-235
+71
 10
-298
+126
 43
 NIL
 go
@@ -738,10 +743,10 @@ NIL
 0
 
 SLIDER
-16
-608
-184
-641
+13
+662
+181
+695
 mortality
 mortality
 0.01
@@ -827,18 +832,18 @@ PENS
 TEXTBOX
 148
 528
-283
-582
-number of initial plasmid incompatibility groups (= max. number of plasmids per bacterium)
+301
+570
+number of incompatibility groups making up the initial plasmid population
 11
 0.0
 1
 
 TEXTBOX
-191
-613
-305
-631
+192
+657
+306
+675
 washout probability
 11
 0.0
@@ -876,10 +881,10 @@ simulate 'biofilm phase' (off) or 'planktonic phase' (on)
 1
 
 TEXTBOX
-182
-710
-321
-778
+183
+754
+322
+822
 bacteria may immigrate with a probability of immigration. Plasmid properties are drawn as for the initial pool.
 11
 0.0
@@ -896,10 +901,10 @@ VARIABLES DETERMINING TRAITS AND DIVERSITY OF INITIAL PLASMID POPULATION
 1
 
 TEXTBOX
-16
-589
-255
-607
+13
+575
+252
+593
 VARIABLES DETERMINING GLOBAL REGIME
 11
 0.0
@@ -930,10 +935,10 @@ PENS
 "ARP" 1.0 2 -955883 true "" ""
 
 SLIDER
-6
-488
-130
-521
+7
+487
+131
+520
 dev-strength
 dev-strength
 0
@@ -945,10 +950,10 @@ NIL
 HORIZONTAL
 
 TEXTBOX
-147
-493
-285
-518
+148
+492
+286
+517
 coefficient of variation for normal distributions
 11
 0.0
@@ -1027,9 +1032,9 @@ HORIZONTAL
 TEXTBOX
 147
 442
-300
-485
-initial mean efficiency of conjugation (transfer prob. relation to cm costs)
+305
+488
+initial mean efficiency of conjugation (relation of cost to transfer probability)
 11
 0.0
 1
@@ -1213,10 +1218,10 @@ conjugative-ARP?
 -1000
 
 INPUTBOX
-15
-644
-176
-704
+12
+698
+173
+758
 seg-prob
 0.001
 1
@@ -1224,10 +1229,10 @@ seg-prob
 Number
 
 TEXTBOX
-184
-645
-330
-702
+185
+689
+331
+746
 probability that a plasmid is not transfered to one of the daughter cells during bacterial fission
 11
 0.0
@@ -1254,10 +1259,10 @@ STOP CONDITIONS
 1
 
 INPUTBOX
-17
-708
-178
-768
+14
+762
+175
+822
 immigration
 0.0
 1
@@ -1366,10 +1371,10 @@ PENS
 "inc-div" 1.0 0 -16777216 true "" ""
 
 INPUTBOX
-238
-48
-298
-108
+13
+597
+73
+657
 world-dim
 250.0
 1
@@ -1387,10 +1392,10 @@ inc-seg-mechanism
 0
 
 SWITCH
-99
-55
-233
-88
+94
+51
+228
+84
 record-video?
 record-video?
 1
@@ -1545,7 +1550,7 @@ Specifications for antibiotics and resistances:
 TEXTBOX
 899
 762
-1017
+1012
 818
 -> compare to total simualtion-time (consider regime-shift?)
 11
@@ -1602,13 +1607,33 @@ Movie maker:
 0.0
 1
 
-BUTTON
-6
+TEXTBOX
+132
 10
-156
+231
+41
+1. press 'setup'\n2. press 'go'
+12
+0.0
+1
+
+TEXTBOX
+88
+597
+257
+653
+edge length of the quadratic grid as a specification of the model world size (automatic visual scaling applies)
+11
+0.0
+1
+
+BUTTON
+237
+10
+292
 43
 NIL
-reset-default-settings
+reset
 NIL
 1
 T
@@ -1619,17 +1644,28 @@ NIL
 NIL
 1
 
+TEXTBOX
+230
+45
+306
+82
+press to reset\nto default para-\nmeterization
+9
+0.0
+1
+
 @#$#@#$#@
+## HOW TO RUN A SIMULATION
+
+This is a NetLogo model that can be easily executed using the buttons in the user interface.
+
+Pressing 'setup' initializes the model world, e.g. bacteria and plasmids are generated and distributed over the model world according to the rules determined as a procedure 'setup' in the model code and according to the specifications given by the slider and switches in the user interface. If, for example, antibiotic resistance is to be considered, settings must be made for the number ('ARP-prop') and characteristics of resistance-carrying plasmids ('initial-ARP?', 'conjugative-ARP?'). By default, the model is initialized without antibiotic resistance plasmids.
+
+Pressing 'go' starts a simulation, i.e. all rules that are determined in the procedure named 'go' in the model code are repeatedly applied until the model is forced to stop, e.g. because the specified simulation time is reached or 'go' is pressed again. A number of global variables determine the environmental conditions and should be determined before "setup" is pressed, but they can also be changed for a running model to observe the associated effects, e.g. to study how an increasing or decreasing bacteriostatic antibiotic action ('baa') affects population dynamics.
+
 ## CREDITS AND REFERENCES
 
-A complete description of the model is part of a manuscript entitled "Plasmid interaction networks maintain genetic diversity and costly antibiotic resistance" by Martin Zwanzig and Uta Berger, submitted to the scientific journal 'Molecular Systems Biology' in 2019. Feel free to use or modify this model for your own research, but please cite this publication. Requests for cooperation are also welcome.
-
-## MODEL VERSION
-
-This is the first release of the PlasmidomeIBM and was created under NetLogo Version 6.0.4.
-
-For updates and extensions, please check the GitHub Repository:
-https://github.com/mzwanzig/PlasmidomeIBM
+M Zwanzig, U Berger (2020), Modelling the impact of plasmid interactions on coexistence and antibiotic resistance in evolving plasmid communities. eLife (under review; 14.07.2020)
 @#$#@#$#@
 default
 true
@@ -1936,7 +1972,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.4
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
