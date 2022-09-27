@@ -5,4 +5,4 @@ The model is implemented in the multi-agent programmable modeling environment Ne
 
 Downloading and running the model file with NetLogo allows you to reproduce some predefinded simulation experiments, stored as setups in the 'BehaviorSpace' as well as to run simulations with self-defined parameters.
 
-A complete description of the model is part of a manuscript entitled "Modelling the impact of plasmid interactions on coexistence and antibiotic resistance in evolving plasmid communities" by Martin Zwanzig and Uta Berger, in review at the scientific journal eLife. If you plan to use or modify this model for your own research, please contact martin.zwanzig@tu-dresden.de
+A complete description of the model is part of a manuscript published on bioRxiv (https://doi.org/10.1101/2020.09.15.297721): Zwanzig, M. & Berger, U. (2020): Self-organisation and persistence of antibiotic resistance in evolving plasmid communities. The manuscript is currently under review at the scientific journal eLife. If you plan to use or modify this model for your own research, please contact martin.zwanzig@tu-dresden.de
