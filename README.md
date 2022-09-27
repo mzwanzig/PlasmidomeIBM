@@ -1,5 +1,5 @@
 # PlasmidomeIBM
-Individual-based model simulating the inter- and intracellular interaction of diverse plasmids in a clonal bacterial population.
+Individual-based model simulating the inter- and intracellular interaction of multiple plasmid types varying in traits such as plasmid cost, horizonal transfer rates and incompatibility. It demonstrates the assembly of plasmid communities in surface-attached isogenic bacterial populations and their robustness to perturbartions such as those associated with abrupt changes in environmental conditions, e.g. persistence of plasmid-encoded functions such as antibiotic resistance after a stop of abiotic selection of these traits.
 
 The model is implemented in the multi-agent programmable modeling environment NetLogo, which is freely available from https://ccl.northwestern.edu/netlogo/. It was created under NetLogo Version 6.1.1.
 
